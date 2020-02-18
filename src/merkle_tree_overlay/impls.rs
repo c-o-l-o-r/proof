@@ -172,7 +172,7 @@ impl_merkle_overlay_for_collection_type!(FixedVector, false);
 pub fn replace_index(node: Node, index: NodeIndex) -> Node {
     Node {
         ident: node.ident.clone(),
-        index: index,
+        index,
         size: node.size,
         offset: node.offset,
         height: node.height,

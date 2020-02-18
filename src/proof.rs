@@ -41,11 +41,11 @@ impl<T: MerkleTreeOverlay> Proof<T> {
 
     /// Generates a `SerializedProof` proving that `path` is a part of the current merkle tree.
     pub fn extract(&self, path: Vec<PathElement>) -> Result<SerializedProof> {
-        if path.len() == 0 {
+        if path.is_empty() {
             return Err(Error::EmptyPath());
         }
 
-        let node = T::get_node(path.clone())?;
+        let node = T::get_node(path)?;
 
         let mut visitor = node.index;
         let mut indices: Vec<NodeIndex> = vec![visitor];
@@ -74,7 +74,7 @@ impl<T: MerkleTreeOverlay> Proof<T> {
 
     /// Returns the bytes representation of the object associated with `path`
     pub fn get_bytes(&self, path: Vec<PathElement>) -> Result<Vec<u8>> {
-        if path.len() == 0 {
+        if path.is_empty() {
             return Err(Error::EmptyPath());
         }
 
@@ -85,7 +85,7 @@ impl<T: MerkleTreeOverlay> Proof<T> {
 
     /// Replaces the bytes at `path` with `bytes`.
     pub fn set_bytes(&mut self, path: Vec<PathElement>, bytes: Vec<u8>) -> Result<()> {
-        if path.len() == 0 {
+        if path.is_empty() {
             return Err(Error::EmptyPath());
         }
 
@@ -138,11 +138,11 @@ impl<T: MerkleTreeOverlay> Proof<T> {
 fn bytes_at_path_helper<T: MerkleTreeOverlay + ?Sized>(
     path: Vec<PathElement>,
 ) -> Result<(NodeIndex, usize, usize)> {
-    if path.len() == 0 {
+    if path.is_empty() {
         return Err(Error::EmptyPath());
     }
 
-    let node = T::get_node(path.clone())?;
+    let node = T::get_node(path)?;
 
     Ok((
         node.index,
