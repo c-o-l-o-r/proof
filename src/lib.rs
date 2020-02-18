@@ -7,6 +7,13 @@
 //! assuming that each of the child objects have implemented the
 //! [`MerkleTreeOverlay`](trait.MerkleTreeOverlay.html) trait.
 
+#[cfg(feature = "generate")]
+extern crate alloc;
+
+#[cfg(feature = "generate")]
+pub mod list;
+pub mod reflist;
+
 pub mod backend;
 mod error;
 mod merkle_tree_overlay;
@@ -18,7 +25,6 @@ pub mod tree_arithmetic;
 pub mod types;
 
 pub use crate::backend::hash_children;
-pub use crate::error::Error;
 pub use crate::merkle_tree_overlay::{impls, MerkleTreeOverlay};
 pub use crate::path::PathElement;
 pub use crate::proof::Proof;
@@ -28,3 +34,30 @@ pub use crate::ser::SerializedProof;
 pub type NodeIndex = u64;
 
 pub const BYTES_PER_CHUNK: usize = 32;
+
+type Index = u128;
+
+pub mod number {
+    pub trait Number {
+        fn val() -> usize;
+    }
+
+    macro_rules! make_num {
+        ($name:ident, $val:expr) => {
+            #[derive(Clone)]
+            pub struct $name;
+
+            impl Number for $name {
+                fn val() -> usize {
+                    $val
+                }
+            }
+        };
+    }
+
+    make_num!(U2, 2);
+    make_num!(U3, 3);
+    make_num!(U4, 4);
+    make_num!(U5, 5);
+}
+

@@ -1,4 +1,4 @@
-use crate::error::{Error, ERR, OK};
+use crate::error::{ExitCode, ERR, OK};
 use crate::number::Number;
 use crate::Index;
 use bonsai::first_leaf;
@@ -22,7 +22,7 @@ impl<T: RefNode, N: Number> RefList<T, N> {
         }
     }
 
-    pub fn verify(&mut self, a: &[u8; 32]) -> Error {
+    pub fn verify(&mut self, a: &[u8; 32]) -> ExitCode {
         let b = self.backend.root();
 
         if Ok(a) == b {
